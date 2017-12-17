@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link href="../../../css/style.css" rel="stylesheet" type="text/css" />
+	<link href="../../../css/select.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../js/ajaxfileupload.js"></script>
+	<script type="text/javascript" src="../../../js/jquery.idTabs.min.js"></script>
+	<script type="text/javascript" src="../../../js/select-ui.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../../js/method.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../../../assmbly/laydate/laydate.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			//常规用法
+			laydate.render({
+			  elem: '#expireTime',
+			  type: 'datetime'
+			});
+			laydate.render({
+			  elem: '#createTime',
+			  type: 'datetime'
+			});
+		})
+	
+		function subMitFile(){
+	  		method.subMitFile("fileUpload",function(result){
+	  			$("#recommend_img").attr("src",result.data.src);
+	  		});
+	  	}
+		
+		function save(){
+			var data = {};
+			data.name = $("#name").val();
+			data.payment = $("#payment").val();
+			data.expireTime = $("#expireTime").val();
+			data.createTime = $("#createTime").val();
+			data.chance = $("#chance").val();
+			data.number = $("#number").val();
+			data.img = $("#recommend_img").attr("src");
+			$.ajax({
+		         type : "POST",
+		         url : method.getBaseUrl()+"/coupon/publishCoupon",
+		         dataType : "json",
+		         data:data,
+		         success : function (data) {
+		        	if(data.code == "0"){
+		        		alert("保存成功");
+		        	}else{
+		        		alert("保存失败");
+		        	}
+		         }
+		     });
+		}
+	</script>
+	
+	
+</head>
+
+<body>
+
+	<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+    <li><a href="#">首页</a></li>
+    <li><a href="#">商品管理</a></li>
+    <li><a href="#">添加商品</a></li>
+    </ul>
+    </div>
+	<input type="text"  id="tagId" value="" />    
+    <div class="formbody">
+	    <ul class="forminfo">
+		    <div class="formtitle"><span>优惠券新增</span></div>
+		    <li><label>优惠券名称<b>*</b></label><input id="name" type="text" class="dfinput" /></li>
+		    <li><label>金额<b>*</b></label><input id="payment" type="text" class="dfinput" /></li>
+		    <li><label>发放时间<b>*</b></label><input id="createTime" type="text" class="dfinput" /></li>
+		    <li><label>过期时间<b>*</b></label><input id="expireTime" type="text" class="dfinput" /></li>
+		    <li><label>发放个数<b>*</b></label><input id="number" type="text" class="dfinput" /></li>
+		    <li><label>成功获取概率<b>*</b></label><input id="chance" type="text" class="dfinput" /></li>
+		    <img id="recommend_img"></img>
+		    <form id="addAttaForm" enctype="multipart/form-data" method="post">  
+			    <div class="row">  
+			        <label for="fileUpload">选择商品图片：</label>  
+			        <input type="file" name="fileUpload" id="fileUpload"/>  
+			        <input type="button" value="点击上传" name="点击上传" onclick="subMitFile()"/>
+			    </div>  
+			</form>  
+		    <!-- <ul class="forminfo">
+		    <li><label>文章标题</label><input name="" type="text" class="dfinput" /><i>标题不能超过30个字符</i></li>
+		    <li><label>关键字</label><input name="" type="text" class="dfinput" /><i>多个关键字用,隔开</i></li>
+		    <li><label>是否审核</label><cite><input name="" type="radio" value="" checked="checked" />是&nbsp;&nbsp;&nbsp;&nbsp;<input name="" type="radio" value="" />否</cite></li>
+		    <li><label>引用地址</label><input name="" type="text" class="dfinput" value="http://www..com/html/uidesign/" /></li>
+		    <li><label>文章内容</label><textarea name="" cols="" rows="" class="textinput"></textarea></li>
+		    <li><label>&nbsp;</label><input name="" type="button" class="btn" value="确认保存"/></li>
+		    </ul> -->
+	    </ul>
+	    <label>&nbsp;</label><input onclick="save()" type="button" class="btn" value="保存"/>
+    </div>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>疯狂音乐后台管理系统</title>
+<link href="../../css/style.css" rel="stylesheet" type="text/css" />
+<link href="../../css/select.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../js/jquery.js"></script>
+<script type="text/javascript" src="../../js/jquery.idTabs.min.js"></script>
+<script type="text/javascript" src="../../js/select-ui.min.js"></script>
+<script type="text/javascript" src="../../js/method.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	  /* $(".click").click(function(){
+	  	$(".tip").fadeIn(200);
+	  }); */
+	  
+	  	$(".select1").uedSelect({
+			width : 345			  
+		});
+		$(".select2").uedSelect({
+			width : 167  
+		});
+		$(".select3").uedSelect({
+			width : 100
+		});
+	  
+	  $(".tiptop a").click(function(){
+	 	 $(".tip").fadeOut(200);
+	});
+	
+	  $(".sure").click(function(){
+	  	$(".tip").fadeOut(100);
+	});
+	
+	  $(".cancel").click(function(){
+	  	$(".tip").fadeOut(100);
+	});
+	  
+	  $("#productAdd").click(function(){
+		  //$("#rightFrame").attr("src",window.location.host + "/crazyMusic_yw/page/services/mall/form.html");
+		  location.href = window.parent.method.getBaseUrl()+ "/page/services/mall/form.jsp";
+	  });
+	//后台数据开始
+	  $.ajax({
+	         type : "GET",
+	         url : method.getBaseUrl()+"/mall/list",
+	         dataType : "json",
+	         success : function (data) {
+	        	 if(data != null && data.length > 0){
+	        		 for(var i = 0;i < data.length;i++){
+	        			 proList.list(data[i]);
+	        		 }
+	        	 }
+	         }
+	     });
+});
+var proList = {
+	list:function(data){
+		if(data != null){
+			$("#listTbody").append("<tr><td>"+data.id+"</td> <td>"+data.simple_name+"</td> <td>"+data.name+"</td> "
+					+"<td>"+data.type_name+"</td> <td>"+data.tag_name+"</td> <td>"+data.now_price+"</td> <td>"+data.market_price+"</td> "
+					+"<td>"+data.cost_price+"</td> <td>"+data.post_fee+"</td> <td>"+(data.publish_state=="0"?"<span  onclick=publish('"+data.id+"') style='color: red;cursor:pointer'>未发布</span>":"<span onclick=unPublish('"+data.id+"') style='color: green;cursor:pointer'>已发布</span>")+"</td> <td><a href='form.jsp?id="+data.id+"' class='tablelink'>查看</a> <a onclick=del('"+data.id+"') href='#' class='tablelink'> 删除</a></td> </tr>");
+		}
+	}
+}
+	//发布
+	function publish(id){
+		if(confirm("请仔细检查！！！确定发布?")){
+			var data = {};
+			data.id = id;
+			$.ajax({
+		         type : "POST",
+		         url : method.getBaseUrl()+"/mall/productPublish",
+		         dataType : "json",
+		         data:data,
+		         success : function (data) {
+		        	if(data.code == "0"){
+		        		alert("发布成功");
+		        	}else{
+		        		alert("发布失败");
+		        	}
+		         }
+		     });
+		}
+	}
+	
+	function unPublish(id){
+		if(confirm("请仔细检查！！！确定取消发布?")){
+			var data = {};
+			data.id = id;
+			$.ajax({
+		         type : "POST",
+		         url : method.getBaseUrl()+"/mall/productUnPublish",
+		         dataType : "json",
+		         data:data,
+		         success : function (data) {
+		        	if(data.code == "0"){
+		        		alert("取消发布成功");
+		        	}else{
+		        		alert("取消发布失败");
+		        	}
+		         }
+		     });
+		}
+	}
+	function del(id){
+		if(confirm("确定删除？请仔细检查！")){
+			var data = {};
+			data.id = id;
+			$.ajax({
+		         type : "POST",
+		         url : method.getBaseUrl()+"/mall/productDelete",
+		         dataType : "json",
+		         data:data,
+		         success : function (data) {
+		        	if(data.code == "0"){
+		        		alert("删除成功");
+		        	}else{
+		        		alert("删除失败");
+		        	}
+		         }
+		     });
+		}
+		
+	}
+
+</script>
+
+
+</head>
+
+
+<body>
+
+	<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+    <li><a href="#">首页</a></li>
+    <li><a  href="#">商品管理</a></li>
+    <li><a  href="#">商品列表</a></li>
+    </ul>
+    </div>
+    
+    <div class="rightinfo">
+    
+    <div class="tools">
+    
+    	<ul class="toolbar">
+        <li class="click" id="productAdd"><span><img src="../../images/t01.png" /></span>添加</li>
+        <li class="click"><span><img src="../../images/t02.png" /></span>修改</li>
+        <li><span><img src="../../images/t03.png" /></span>删除</li>
+        <li><span><img src="../../images/t04.png" /></span>统计</li>
+        </ul>
+        
+        
+        <ul class="toolbar1">
+        <li><span><img src="../../images/t05.png" /></span>设置</li>
+        </ul>
+    
+    </div>
+    
+    <div id="tab2" class="tabson">
+    
+    
+    <ul class="seachform">
+	    <li><label>综合查询</label><input name="" type="text" class="scinput" /></li>
+	    <li><label>指派</label>  
+	    <div class="vocation">
+		    <select class="select1">
+		    <option>全部</option>
+		    <option>其他</option>
+	    </select>
+	    </div>
+	    </li>
+	    
+	    <li><label>重点客户</label>  
+	    <div class="vocation">
+		    <select class="select2">
+		    <option>全部</option>
+		    <option>其他</option>
+	    </select>
+	    </div>
+	    </li>
+	    
+	    <li><label>客户状态</label>  
+	    <div class="vocation">
+		    <select class="select3">
+		    <option>全部</option>
+		    <option>其他</option>
+		    </select>
+	    </div>
+	    </li>
+	    
+	    <li><label>&nbsp;</label><input name="" type="button" class="scbtn" value="查询"/></li>
+    </ul>
+    <table class="tablelist">
+    	<thead>
+    	<tr>
+        <th>编号<i class="sort"><img src="../../images/px.gif" /></i></th>
+        <th>商品简标题</th>
+        <th>商品全标题</th>
+        <th>商品分类</th>
+        <th>商品促销标签</th>
+        <th>当前价格</th>
+        <th>市场价格</th>
+        <th>原价</th>
+        <th>邮费</th>
+        <th>发布状态</th>
+        <th>操作</th>
+        </tr>
+        </thead>
+        <tbody id="listTbody">
+        <!-- <tr>
+        <td><input name="" type="checkbox" value="" /></td>
+        <td>20130908</td>
+        <td>王金平幕僚：马英九声明字字见血 人活着没意思</td>
+        <td>admin</td>
+        <td>江苏南京</td>
+        <td>2013-09-09 15:05</td>
+        <td>已审核</td>
+        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink"> 删除</a></td>
+        </tr>  -->
+        </tbody>
+    </table>
+    
+   
+    <div class="pagin">
+    	<div class="message">共<i class="blue">1256</i>条记录，当前显示第&nbsp;<i class="blue">2&nbsp;</i>页</div>
+        <ul class="paginList">
+        <li class="paginItem"><a href="javascript:;"><span class="pagepre"></span></a></li>
+        <li class="paginItem"><a href="javascript:;">1</a></li>
+        <li class="paginItem current"><a href="javascript:;">2</a></li>
+        <li class="paginItem"><a href="javascript:;">3</a></li>
+        <li class="paginItem"><a href="javascript:;">4</a></li>
+        <li class="paginItem"><a href="javascript:;">5</a></li>
+        <li class="paginItem more"><a href="javascript:;">...</a></li>
+        <li class="paginItem"><a href="javascript:;">10</a></li>
+        <li class="paginItem"><a href="javascript:;"><span class="pagenxt"></span></a></li>
+        </ul>
+    </div>
+    
+    
+    <div class="tip">
+    	<div class="tiptop"><span>提示信息</span><a></a></div>
+        
+      <div class="tipinfo">
+        <span><img src="../../images/ticon.png" /></span>
+        <div class="tipright">
+        <p>是否确认对信息的修改 ？</p>
+        <cite>如果是请点击确定按钮 ，否则请点取消。</cite>
+        </div>
+        </div>
+        
+        <div class="tipbtn">
+        <input name="" type="button"  class="sure" value="确定" />&nbsp;
+        <input name="" type="button"  class="cancel" value="取消" />
+        </div>
+    
+    </div>
+    
+    
+    
+    
+    </div>
+    
+    <script type="text/javascript">
+	$('.tablelist tbody tr:odd').addClass('odd');
+	</script>
+</body>
+</html>

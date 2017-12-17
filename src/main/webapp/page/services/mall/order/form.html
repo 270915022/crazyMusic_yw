@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>发货</title>
+<link href="../../../css/style.css" rel="stylesheet" type="text/css" />
+	<link href="../../../css/select.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../js/jquery.idTabs.min.js"></script>
+	<script type="text/javascript" src="../../../js/select-ui.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../../js/method.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var id = method.getParamString("id");
+			if(id){
+				$("#orderId").val(id);
+			};
+		})
+	
+		
+		function save(){
+			var data = {};
+			data.orderId = $("#orderId").val();
+			data.shipping_name = $("#shipping_name").val();
+			data.shipping_code = $("#shipping_code").val();
+			$.ajax({
+		         type : "POST",
+		         url : method.getBaseUrl()+"/mall/shippingSave",
+		         dataType : "json",
+		         data:data,
+		         success : function (data) {
+		        	if(data.code == "0"){
+		        		alert("发货成功");
+		        	}else{
+		        		alert(data.msg);
+		        	}
+		         }
+		     });
+		}
+	</script>
+	
+	
+</head>
+
+<body>
+
+	<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+    <li><a href="#">首页</a></li>
+    <li><a href="#">商品管理</a></li>
+    <li><a href="#">添加商品</a></li>
+    </ul>
+    </div>
+	<input type="hidden"  id="orderId" value="" />    
+    <div class="formbody">
+	    <ul class="forminfo">
+		    <div class="formtitle"><span>物流信息</span></div>
+		    <li><label>物流名称<b>*</b></label><input id="shipping_name" type="text" class="dfinput" /></li>
+		    <li><label>物流单号<b>*</b></label><input id="shipping_code" type="text" class="dfinput" /></li>
+	    </ul>
+	    <label>&nbsp;</label><input onclick="save()" type="button" class="btn" value="保存"/>
+    </div>
+</body>
+</html>

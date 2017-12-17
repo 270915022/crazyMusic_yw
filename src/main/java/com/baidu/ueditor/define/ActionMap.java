@@ -9,7 +9,7 @@ import java.util.HashMap;
  *
  */
 @SuppressWarnings("serial")
-public final class ActionMap {
+public final class ActionMap { 
 
 	public static final Map<String, Integer> mapping;
 	// 获取配置请求

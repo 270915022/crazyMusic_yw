@@ -45,10 +45,11 @@ public class CouponController extends BaseController{
 		String payment = req.getParameter("payment");
 		String expireTime = req.getParameter("expireTime");
 		String publishTime = req.getParameter("createTime");
+		String publish_stop_date = req.getParameter("publish_stop_date");
 		String number = req.getParameter("number");
 		String chance = req.getParameter("chance");
 		String img = req.getParameter("img");
-		int execute = execute("insert into coupon (id,name,payment,publish_date,expire_date,number,chance,img,create_date) values (?,?,?,?,?,?,?,?,?)",generateKey(),name,payment,publishTime,expireTime,number,chance,img,new Date());
+		int execute = execute("insert into coupon (id,name,payment,publish_date,expire_date,number,chance,img,create_date,publish_stop_date) values (?,?,?,?,?,?,?,?,?,?)",generateKey(),name,payment,publishTime,expireTime,number,chance,img,new Date(),publish_stop_date);
 		if(execute <= 0) {
 			ResponseUtils.putJsonResponse(resp, getFailJSON("添加失败"));
 			return;

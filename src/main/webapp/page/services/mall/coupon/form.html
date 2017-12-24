@@ -22,6 +22,10 @@
 			  elem: '#createTime',
 			  type: 'datetime'
 			});
+			laydate.render({
+			  elem: '#publish_stopTime',
+			  type: 'datetime'
+			});
 		})
 	
 		function subMitFile(){
@@ -35,6 +39,7 @@
 			data.name = $("#name").val();
 			data.payment = $("#payment").val();
 			data.expireTime = $("#expireTime").val();
+			data.publish_stop_date = $("#publish_stopTime").val();
 			data.createTime = $("#createTime").val();
 			data.chance = $("#chance").val();
 			data.number = $("#number").val();
@@ -75,6 +80,7 @@
 		    <li><label>优惠券名称<b>*</b></label><input id="name" type="text" class="dfinput" /></li>
 		    <li><label>金额<b>*</b></label><input id="payment" type="text" class="dfinput" /></li>
 		    <li><label>发放时间<b>*</b></label><input id="createTime" type="text" class="dfinput" /></li>
+		    <li><label>发放截止时间<b>*</b></label><input id="publish_stopTime" type="text" class="dfinput" /></li>
 		    <li><label>过期时间<b>*</b></label><input id="expireTime" type="text" class="dfinput" /></li>
 		    <li><label>发放个数<b>*</b></label><input id="number" type="text" class="dfinput" /></li>
 		    <li><label>成功获取概率<b>*</b></label><input id="chance" type="text" class="dfinput" /></li>

@@ -115,4 +115,42 @@ public class UserController extends BaseController{
 		ResponseUtils.putJsonResponse(resp, getSuccessJSON(null));
 	}
 	
+	
+	
+	/**
+	 * 审核列表
+	 */
+	@RequestMapping("/teacherExamine")
+	@ResponseBody
+	public void teacherExamine(HttpServletRequest req,HttpServletResponse resp){
+		List<JSONObject> list = queryForJsonList("select * from user_teacher_longevity order by FIELD('state',0),create_date");
+		ResponseUtils.putJsonResponse(resp, list);
+	}
+	/**
+	 * 审核详情
+	 */
+	@RequestMapping("/teacherExamineDetail")
+	@ResponseBody
+	public void teacherExamineDetail(HttpServletRequest req,HttpServletResponse resp){
+		String id = req.getParameter("id");
+		JSONObject jb = queryForJsonObject("select * from user_teacher_longevity where id = ?", id);
+		ResponseUtils.putJsonResponse(resp, getSuccessJSON(jb));
+	}
+	/**
+	 * 审核
+	 */
+	@RequestMapping("/examine")
+	@ResponseBody
+	public void examine(HttpServletRequest req,HttpServletResponse resp){
+		String id = req.getParameter("id");
+		String state = req.getParameter("state");
+		String error_msg = req.getParameter("error_msg");
+		int execute = execute("update user_teacher_longevity set state=?,error_msg=? where id = ?", state,error_msg,id);
+		if(execute <= 0) {
+			ResponseUtils.putJsonResponse(resp, getFailJSON("审核失败！"));
+			return;
+		}
+		ResponseUtils.putJsonResponse(resp, getSuccessJSON(null));
+	}
+	
 }

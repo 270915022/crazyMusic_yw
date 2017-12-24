@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link href="../../../css/style.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="../../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../../js/jquery.idTabs.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="../../../js/method.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var id = method.getParamString("id");
+			if(id){
+				$("#examineId").val(id);
+				var data = {};
+				data.id = id;
+				$.ajax({
+			         type : "POST",
+			         url : method.getBaseUrl()+"/user/teacherExamineDetail",
+			         dataType : "json",
+			         data:data,
+			         success : function (data) {
+			        	 if(data.code != "0"){
+			        		 alert(data.msg);
+			        	 }else{
+			        		 $("#user_id").html(data.data.user_id);
+			        		 $("#card_front").attr("src",data.data.card_front);
+			        		 $("#card_back").attr("src",data.data.card_back);
+			        		 var longevity = data.data.longevity;
+			        		 var longevityArr = longevity.split(",");
+							 for (var i = 0; i < longevityArr.length; i++) {
+								var url = longevityArr[i];
+								$("#longevity").append("<img src='"+url+"' />");
+							}
+							$("#state").val(data.data.state);
+							$("#error_msg").val(data.data.error_msg);
+			        	 }
+			         }
+			     });
+			};
+		})
+	
+		
+		function save(){
+			var data = {};
+			data.state = $("#state").val();
+			data.id = $("#examineId").val();
+			data.error_msg = $("#error_msg").val();
+			$.ajax({
+		         type : "POST",
+		         url : method.getBaseUrl()+"/user/examine",
+		         dataType : "json",
+		         data:data,
+		         success : function (data) {
+		        	if(data.code == "0"){
+		        		alert("保存成功");
+		        	}else{
+		        		alert("保存失败");
+		        	}
+		         }
+		     });
+		}
+	</script>
+	
+	
+</head>
+
+<body>
+
+	<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+    <li><a href="#">首页</a></li>
+    <li><a href="#">商品管理</a></li>
+    <li><a href="#">添加商品</a></li>
+    </ul>
+    </div>
+	<input type="hidden"  id="examineId" value="" />    
+    <div class="formbody">
+	    <ul class="forminfo">
+		    <div class="formtitle"><span>申请信息</span></div>
+		    <li><label>用户id<b>*</b></label><span id="user_id" type="text" /></li>
+		    <li><label>身份证正面图片<b>*</b></label><img id="card_front" /></li>
+		    <li><label>身份证背面图片<b>*</b></label><img id="card_back" /></li>
+		    <li><label>资质证书<b>*</b></label><span id="longevity"></span></li>
+		    <li><label>审核状态<b>*</b></label>
+				<select id="state">
+					<option value="0" >待审核</option>
+					<option value="1" >审核通过</option>
+					<option value="-1">审核失败</option>
+				</select>
+				
+			</li>
+			<li><label>审核失败理由：<b>*</b></label><input id="error_msg" type="text" class="dfinput" /></li>
+		    <!-- <ul class="forminfo">
+		    <li><label>文章标题</label><input name="" type="text" class="dfinput" /><i>标题不能超过30个字符</i></li>
+		    <li><label>关键字</label><input name="" type="text" class="dfinput" /><i>多个关键字用,隔开</i></li>
+		    <li><label>是否审核</label><cite><input name="" type="radio" value="" checked="checked" />是&nbsp;&nbsp;&nbsp;&nbsp;<input name="" type="radio" value="" />否</cite></li>
+		    <li><label>引用地址</label><input name="" type="text" class="dfinput" value="http://www..com/html/uidesign/" /></li>
+		    <li><label>文章内容</label><textarea name="" cols="" rows="" class="textinput"></textarea></li>
+		    <li><label>&nbsp;</label><input name="" type="button" class="btn" value="确认保存"/></li>
+		    </ul> -->
+	    </ul>
+	    <br />
+	    <label>&nbsp;</label><input onclick="save()" type="button" class="btn" value="保存"/>
+    </div>
+</body>
+</html>

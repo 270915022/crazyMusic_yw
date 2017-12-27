@@ -20,7 +20,7 @@
 		         success : function (data) {
 		        	 if(data != null && data.length > 0){
 		        		 for(var i = 0;i < data.length;i++){
-		        			 if(data[i].parent_id == null){
+		        			 if(data[i].parent_id == null || data[i].parent_id == ""){
 			        			 $("#product_type").append("<option value='"+data[i].id+"'>"+data[i].type_name+"</option>");
 		        			 }
 		        		 }
